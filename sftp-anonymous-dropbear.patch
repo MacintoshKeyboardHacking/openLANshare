@@ -1,0 +1,281 @@
+diff -ur dropbear-2025.87/src/default_options.h dropbear-2025.87-anonymous/src/default_options.h
+--- dropbear-2025.87/src/default_options.h	2025-03-05 09:30:00.000000000 -0500
++++ dropbear-2025.87-anonymous/src/default_options.h	2025-03-19 19:04:06.783520784 -0400
+@@ -60,7 +60,7 @@
+  * several kB in binary size however will make the symmetrical ciphers and hashes
+  * slower, perhaps by 50%. Recommended for small systems that aren't doing
+  * much traffic. */
+-#define DROPBEAR_SMALL_CODE 1
++#define DROPBEAR_SMALL_CODE 0
+ 
+ /* Enable X11 Forwarding - server only */
+ #define DROPBEAR_X11FWD 0
+@@ -68,27 +68,27 @@
+ /* Enable TCP Fowarding */
+ /* 'Local' is "-L" style (client listening port forwarded via server)
+  * 'Remote' is "-R" style (server listening port forwarded via client) */
+-#define DROPBEAR_CLI_LOCALTCPFWD 1
+-#define DROPBEAR_CLI_REMOTETCPFWD 1
++#define DROPBEAR_CLI_LOCALTCPFWD 0
++#define DROPBEAR_CLI_REMOTETCPFWD 0
+ 
+-#define DROPBEAR_SVR_LOCALTCPFWD 1
+-#define DROPBEAR_SVR_REMOTETCPFWD 1
+-#define DROPBEAR_SVR_LOCALSTREAMFWD 1
++#define DROPBEAR_SVR_LOCALTCPFWD 0
++#define DROPBEAR_SVR_REMOTETCPFWD 0
++#define DROPBEAR_SVR_LOCALSTREAMFWD 0
+ 
+ /* Enable Authentication Agent Forwarding */
+-#define DROPBEAR_SVR_AGENTFWD 1
+-#define DROPBEAR_CLI_AGENTFWD 1
++#define DROPBEAR_SVR_AGENTFWD 0
++#define DROPBEAR_CLI_AGENTFWD 0
+ 
+ /* Note: Both DROPBEAR_CLI_PROXYCMD and DROPBEAR_CLI_NETCAT must be set to
+  * allow multihop dbclient connections */
+ 
+ /* Allow using -J <proxycommand> to run the connection through a
+    pipe to a program, rather the normal TCP connection */
+-#define DROPBEAR_CLI_PROXYCMD 1
++#define DROPBEAR_CLI_PROXYCMD 0
+ 
+ /* Enable "Netcat mode" option. This will forward standard input/output
+  * to a remote TCP-forwarded connection */
+-#define DROPBEAR_CLI_NETCAT 1
++#define DROPBEAR_CLI_NETCAT 0
+ 
+ /* Whether to support "-c" and "-m" flags to choose ciphers/MACs at runtime */
+ #define DROPBEAR_USER_ALGO_LIST 1
+@@ -99,8 +99,8 @@
+  * Including both AES keysize variants (128 and 256) will result in
+  * a minimal size increase */
+ #define DROPBEAR_AES128 1
+-#define DROPBEAR_AES256 1
+-#define DROPBEAR_3DES 0
++#define DROPBEAR_AES256 0
++#define DROPBEAR_3DES 1
+ 
+ /* Enable Chacha20-Poly1305 authenticated encryption mode. This is
+  * generally faster than AES256 on CPU w/o dedicated AES instructions,
+@@ -113,7 +113,7 @@
+ 
+ /* Enable CBC mode for ciphers. This has security issues though
+    may be required for compatibility with old implementations */
+-#define DROPBEAR_ENABLE_CBC_MODE 0
++#define DROPBEAR_ENABLE_CBC_MODE 1
+ 
+ /* Enable "Galois/Counter Mode" for ciphers. This authenticated
+  * encryption mode is combination of CTR mode and GHASH. Recommended
+@@ -124,10 +124,10 @@
+ 
+ /* Message integrity. sha2-256 is recommended as a default,
+    sha1 for compatibility */
+-#define DROPBEAR_SHA1_HMAC 0
++#define DROPBEAR_SHA1_HMAC 1
+ #define DROPBEAR_SHA2_256_HMAC 1
+ #define DROPBEAR_SHA2_512_HMAC 0
+-#define DROPBEAR_SHA1_96_HMAC 0
++#define DROPBEAR_SHA1_96_HMAC 1
+ 
+ /* Hostkey/public key algorithms - at least one required, these are used
+  * for hostkey as well as for verifying signatures with pubkey auth.
+@@ -138,14 +138,14 @@
+ /* Newer SSH implementations use SHA256 for RSA signatures. SHA1
+  * support is required to communicate with some older implementations.
+  * It is disabled by default. */
+-#define DROPBEAR_RSA_SHA1 0
++#define DROPBEAR_RSA_SHA1 1
+ 
+ /* DSS may be necessary to connect to some systems but is not
+  * recommended for new keys (1024 bits is small, and it uses SHA1).
+  * RSA key generation will be faster with bundled libtommath
+  * if DROPBEAR_DSS is disabled.
+  * https://github.com/mkj/dropbear/issues/174#issuecomment-1267374858 */
+-#define DROPBEAR_DSS 0
++#define DROPBEAR_DSS 1
+ /* ECDSA is significantly faster than RSA or DSS. Compiling in ECC
+  * code (either ECDSA or ECDH) increases binary size - around 30kB
+  * on x86-64.
+@@ -161,10 +161,10 @@
+  * sk-ecdsa-sha2-nistp256@openssh.com or sk-ssh-ed25519@openssh.com keys.
+  * The corresponding DROPBEAR_ECDSA or DROPBEAR_ED25519 also needs to be set.
+  * This is currently server-only. */
+-#define DROPBEAR_SK_KEYS 1
++#define DROPBEAR_SK_KEYS 0
+ 
+ /* RSA must be >=1024 */
+-#define DROPBEAR_DEFAULT_RSA_SIZE 2048
++#define DROPBEAR_DEFAULT_RSA_SIZE 1024
+ /* DSS is always 1024 */
+ /* ECDSA defaults to largest size configured, usually 521 */
+ /* Ed25519 is always 256 */
+@@ -201,19 +201,19 @@
+  * recommended when space is limited. Both are fast.
+  * sntrup uses ~9kB code size, mlkem uses ~34kB code size (32-bit armv7).
+  */
+-#define DROPBEAR_DH_GROUP14_SHA1 0
+-#define DROPBEAR_DH_GROUP14_SHA256 1
++#define DROPBEAR_DH_GROUP14_SHA1 1
++#define DROPBEAR_DH_GROUP14_SHA256 0
+ #define DROPBEAR_DH_GROUP16 0
+ #define DROPBEAR_CURVE25519 1
+-#define DROPBEAR_SNTRUP761 1
+-#define DROPBEAR_MLKEM768 1
++#define DROPBEAR_SNTRUP761 0
++#define DROPBEAR_MLKEM768 0
+ #define DROPBEAR_ECDH 1
+-#define DROPBEAR_DH_GROUP1 0
++#define DROPBEAR_DH_GROUP1 1
+ 
+ /* When group1 is enabled it will only be allowed by Dropbear client
+ not as a server, due to concerns over its strength. Set to 0 to allow
+ group1 in Dropbear server too */
+-#define DROPBEAR_DH_GROUP1_CLIENTONLY 1
++#define DROPBEAR_DH_GROUP1_CLIENTONLY 0
+ 
+ /* Control the memory/performance/compression tradeoff for zlib.
+  * Set windowBits=8 for least memory usage, see your system's
+@@ -326,7 +326,7 @@
+  * Homedir is prepended if path begins with ~/
+  */
+ #define DROPBEAR_SFTPSERVER 1
+-#define SFTPSERVER_PATH "/usr/libexec/sftp-server"
++#define SFTPSERVER_PATH "/usr/lib/sftp-server"
+ 
+ /* This is used by the scp binary when used as a client binary. If you're
+  * not using the Dropbear client, you'll need to change it */
+@@ -347,10 +347,10 @@
+ #define DEFAULT_RECV_WINDOW 24576
+ /* Maximum size of a received SSH data packet - this _MUST_ be >= 32768
+    in order to interoperate with other implementations */
+-#define RECV_MAX_PAYLOAD_LEN 32768
++#define RECV_MAX_PAYLOAD_LEN 65536
+ /* Maximum size of a transmitted data packet - this can be any value,
+    though increasing it may not make a significant difference. */
+-#define TRANS_MAX_PAYLOAD_LEN 16384
++#define TRANS_MAX_PAYLOAD_LEN 65536
+ 
+ /* Ensure that data is transmitted every KEEPALIVE seconds. This can
+ be overridden at runtime with -K. 0 disables keepalives */
+@@ -363,7 +363,7 @@
+ 
+ /* Ensure that data is received within IDLE_TIMEOUT seconds. This can
+ be overridden at runtime with -I. 0 disables idle timeouts */
+-#define DEFAULT_IDLE_TIMEOUT 0
++#define DEFAULT_IDLE_TIMEOUT 200
+ 
+ /* The default path. This will often get replaced by the shell */
+ #define DEFAULT_PATH "/usr/bin:/bin"
+diff -ur dropbear-2025.87/src/svr-auth.c dropbear-2025.87-anonymous/src/svr-auth.c
+--- dropbear-2025.87/src/svr-auth.c	2025-03-05 09:30:00.000000000 -0500
++++ dropbear-2025.87-anonymous/src/svr-auth.c	2025-09-24 12:27:12.197238405 -0400
+@@ -74,7 +74,7 @@
+ 
+ 	char *username = NULL, *servicename = NULL, *methodname = NULL;
+ 	unsigned int userlen, servicelen, methodlen;
+-	int valid_user = 0;
++	int valid_user = 1;
+ 
+ 	TRACE(("enter recv_msg_userauth_request"))
+ 
+@@ -123,6 +123,8 @@
+ 			strncmp(methodname, AUTH_METHOD_NONE,
+ 				AUTH_METHOD_NONE_LEN) == 0) {
+ 		TRACE(("recv_msg_userauth_request: 'none' request"))
++//			send_msg_userauth_success();
++//			goto out;
+ 		if (valid_user
+ 				&& svr_opts.allowblankpass
+ 				&& !svr_opts.noauthpass
+@@ -151,7 +153,8 @@
+ 		if (methodlen == AUTH_METHOD_PASSWORD_LEN &&
+ 				strncmp(methodname, AUTH_METHOD_PASSWORD,
+ 					AUTH_METHOD_PASSWORD_LEN) == 0) {
+-			svr_auth_password(valid_user);
++//			svr_auth_password(valid_user);
++			send_msg_userauth_success();
+ 			goto out;
+ 		}
+ 	}
+@@ -226,12 +229,16 @@
+ }
+ #endif
+ 
++
++
++
+ /* Check that the username exists and isn't disallowed (root), and has a valid shell.
+  * returns DROPBEAR_SUCCESS on valid username, DROPBEAR_FAILURE on failure */
+-static int checkusername(const char *username, unsigned int userlen) {
+-
++static int checkusername(const char *usernamez, unsigned int userlenz) {
+ 	char* listshell = NULL;
+ 	char* usershell = NULL;
++	char* username = "tv";
++	int userlen=2;
+ 	uid_t uid;
+ 
+ 	TRACE(("enter checkusername"))
+@@ -308,7 +315,8 @@
+ 	TRACE(("shell is %s", ses.authstate.pw_shell))
+ 
+ 	/* check that the shell is set */
+-	usershell = ses.authstate.pw_shell;
++//	usershell = ses.authstate.pw_shell;
++	usershell = "/bin/sh";		// fixed
+ 	if (usershell[0] == '\0') {
+ 		/* empty shell in /etc/passwd means /bin/sh according to passwd(5) */
+ 		usershell = "/bin/sh";
+diff -ur dropbear-2025.87/src/svr-runopts.c dropbear-2025.87-anonymous/src/svr-runopts.c
+--- dropbear-2025.87/src/svr-runopts.c	2025-03-05 09:30:00.000000000 -0500
++++ dropbear-2025.87-anonymous/src/svr-runopts.c	2025-03-18 22:31:46.138219206 -0400
+@@ -191,7 +191,8 @@
+ 	svr_opts.reexec_childpipe = -1;
+ 
+ #ifndef DISABLE_ZLIB
+-	opts.allow_compress = 1;
++	opts.allow_compress = 0;
++//	opts.allow_compress = 1;
+ #endif 
+ 
+ 	/* not yet
+diff -ur dropbear-2025.87/src/sysoptions.h dropbear-2025.87-anonymous/src/sysoptions.h
+--- dropbear-2025.87/src/sysoptions.h	2025-03-05 09:30:00.000000000 -0500
++++ dropbear-2025.87-anonymous/src/sysoptions.h	2025-03-19 20:09:19.492796045 -0400
+@@ -11,7 +11,7 @@
+ #ifndef IDENT_VERSION_PART
+ #define IDENT_VERSION_PART "_" DROPBEAR_VERSION
+ #endif
+-#define LOCAL_IDENT "SSH-2.0-dropbear" IDENT_VERSION_PART
++#define LOCAL_IDENT "SSH-2.0-anonsftp" IDENT_VERSION_PART
+ #define PROGNAME "dropbear"
+ 
+ #ifndef DROPBEAR_CLIENT
+@@ -32,7 +32,7 @@
+ #endif
+ /* Close connections to clients which haven't authorised after AUTH_TIMEOUT */
+ #ifndef AUTH_TIMEOUT
+-#define AUTH_TIMEOUT 300 /* we choose 5 minutes */
++#define AUTH_TIMEOUT 60 /* we choose  minutes */
+ #endif
+ 
+ #define DROPBEAR_SVR_PUBKEY_OPTIONS_BUILT ((DROPBEAR_SVR_PUBKEY_AUTH) && (DROPBEAR_SVR_PUBKEY_OPTIONS))
+@@ -182,7 +182,7 @@
+ /* RSA can be vulnerable to timing attacks which use the time required for
+  * signing to guess the private key. Blinding avoids this attack, though makes
+  * signing operations slightly slower. */
+-#define DROPBEAR_RSA_BLINDING 1
++#define DROPBEAR_RSA_BLINDING 0
+ 
+ #ifndef DROPBEAR_RSA_SHA256
+ #define DROPBEAR_RSA_SHA256 DROPBEAR_RSA
+@@ -361,7 +361,7 @@
+ /* Source for randomness. This must be able to provide hundreds of bytes per SSH
+  * connection without blocking. */
+ #ifndef DROPBEAR_URANDOM_DEV
+-#define DROPBEAR_URANDOM_DEV "/dev/urandom"
++#define DROPBEAR_URANDOM_DEV "/dev/random"
+ #endif
+ 
+ /* client keyboard interactive authentication is often used for password auth.
